@@ -19,6 +19,7 @@ export class ReactWrapperComponent implements AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     this.activatedRoute.data
       .subscribe(async ({loadComponent, loadWrapper, basename}) => {
+        ReactDOM.unmountComponentAtNode(this.elementRef.nativeElement);
         const [ReactWrapper, ReactComponent] = await Promise.all([loadWrapper(), loadComponent()]);
         const ReactElement = React.createElement(ReactWrapper, {basename},React.createElement(ReactComponent));
         ReactDOM.render(ReactElement, this.elementRef.nativeElement);
