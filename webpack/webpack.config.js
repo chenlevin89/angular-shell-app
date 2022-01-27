@@ -16,7 +16,8 @@ module.exports = {
         new ModuleFederationPlugin({
 
             remotes: {
-              "reactRemote":"reactRemote@http://localhost:8081/remoteEntry.js"
+              "reactRemote":"reactRemote@http://localhost:8081/remoteEntry.js",
+              "vueRemote":"vueRemote@http://localhost:8082/remoteEntry.js"
             },
 
             shared: {
@@ -28,6 +29,8 @@ module.exports = {
                 "react": {singleton: true, strictVersion: true, requiredVersion: dependencies["react"]},
                 "react-dom": {singleton: true, strictVersion: true, requiredVersion: dependencies["react-dom"]},
                 "react-router-dom": {singleton: true, strictVersion: true, requiredVersion: dependencies["react-router-dom"]},
+                "vue": {singleton: true, strictVersion: true, requiredVersion: dependencies["vue"]},
+                "vue-router": {singleton: true, strictVersion: true, requiredVersion: dependencies["vue-router"]},
             }
 
         })

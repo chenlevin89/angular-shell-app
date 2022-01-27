@@ -19,6 +19,24 @@ const routes: Routes = [
       loadComponent: async () => (await import('reactRemote/Custom2')).default,
       basename: 'custom'
     }
+  },
+  {
+    matcher: startsWith('vue'),
+    loadChildren: async () => await (await import('./components/vue-wrapper/vue-wrapper.module')).VueWrapperModule,
+    data: {
+      loadMetadata: async () => await import('vueRemote/Wrapper'),
+      component: 'Custom',
+      basename: 'vue'
+    }
+  },
+  {
+    matcher: startsWith('c_vue'),
+    loadChildren: async () => await (await import('./components/vue-wrapper/vue-wrapper.module')).VueWrapperModule,
+    data: {
+      loadMetadata: async () => await import('vueRemote/Wrapper'),
+      component: 'Custom2',
+      basename: 'c_vue'
+    }
   }
 ];
 
