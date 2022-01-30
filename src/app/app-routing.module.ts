@@ -1,14 +1,14 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes, UrlMatcher, UrlSegment} from '@angular/router';
 
-const routes: Routes = [
+export const routes: Routes = [
   {
-    matcher: startsWith('react'),
+    matcher: startsWith('custom2'),
     loadChildren: async () => await (await import('./components/react-wrapper/react-wrapper.module')).ReactWrapperModule,
     data: {
       loadWrapper: async () => (await import('reactRemote/Wrapper')).default,
-      loadComponent: async () => (await import('reactRemote/Custom')).default,
-      basename: 'react'
+      loadComponent: async () => (await import('reactRemote/Custom2')).default,
+      basename: 'custom2'
     }
   },
   {
@@ -16,7 +16,7 @@ const routes: Routes = [
     loadChildren: async () => await (await import('./components/react-wrapper/react-wrapper.module')).ReactWrapperModule,
     data: {
       loadWrapper: async () => (await import('reactRemote/Wrapper')).default,
-      loadComponent: async () => (await import('reactRemote/Custom2')).default,
+      loadComponent: async () => (await import('reactRemote/Custom')).default,
       basename: 'custom'
     }
   },
