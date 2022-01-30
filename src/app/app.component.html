@@ -1,9 +1,9 @@
-<div class="nav-bar">
-  <a routerLink="">Home</a>
-  <a routerLink="custom">React</a>
-  <a routerLink="custom2">React2</a>
-  <a routerLink="vue">Vue</a>
-  <a routerLink="c_vue">Vue2</a>
-</div>
+<fusion-layout [configuration]="(layoutConfiguration$.asObservable() | async) || {}"
+               (menuSidebarItemClicked)="menuSidebarItemClicked($event)">
+  <div class="inner-content-holder">
+    <router-outlet></router-outlet>
+  </div>
+</fusion-layout>
 
-<router-outlet></router-outlet>
+<!-- <fusion-loader [status]="!!(loading$ | async)">Loading Please Wait...</fusion-loader> -->
+

@@ -1,7 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
+@import '../node_modules/@ironsource/fusion-ui/style/vars/vars';
+@import '../node_modules/@ironsource/fusion-ui/style/vars/mixins';
+@import '../node_modules/@ironsource/fusion-ui/style/vars/border';
+@import '../node_modules/@ironsource/fusion-ui/style/fonts';
+@import '../node_modules/@ironsource/fusion-ui/style/fonts_v1';
+@import '../node_modules/@ironsource/fusion-ui/style/grid';
 
-html,
+
 body {
+  font: 13px/20px $body;
+  color: $dark-300;
+  -webkit-font-smoothing: antialiased;
   margin: 0;
   padding: 0;
 }

@@ -1,6 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {NavigationEnd, Router} from '@angular/router';
+import {Router} from '@angular/router';
+import {LayoutComponentConfiguration, SidebarMenuItem} from '@ironsource/fusion-ui';
+import {BehaviorSubject} from 'rxjs';
 import {routes} from './app-routing.module';
+import {LAYOUT_CONFIGURATION} from './app.config';
 
 
 @Component({
@@ -12,10 +15,22 @@ export class AppComponent implements OnInit {
 
   static overrideHistoryPushState = false;
 
+  layoutConfiguration$ = new BehaviorSubject<LayoutComponentConfiguration>(LAYOUT_CONFIGURATION);
+
   constructor(private readonly router: Router) {
   }
 
   ngOnInit(): void {
+    this.overrideHistoryOnPushMethod();
+  }
+
+
+  menuSidebarItemClicked(item: SidebarMenuItem): void {
+    this.router.navigate([item.route]);
+  }
+
+
+  private overrideHistoryOnPushMethod(): void {
     const original = window.history.pushState;
     const callback = this.handleMultiFrameworkRouteChange.bind(this);
     if (!AppComponent.overrideHistoryPushState) {
@@ -26,7 +41,6 @@ export class AppComponent implements OnInit {
       }
     }
   }
-
 
   private handleMultiFrameworkRouteChange(route: string): void {
     const splitRoute = route.split('/');

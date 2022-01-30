@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  assetsPath: 'https://fusion.ironsrc.net/assets'
 };
