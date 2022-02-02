@@ -29,6 +29,11 @@ const LAYOUT_SIDEBAR_MENU_ITEMS: SidebarMenuItem[] = [
   },
   {
     icon: 'magic',
+    name: 'Users',
+    route: '/users'
+  },
+  {
+    icon: 'magic',
     name: 'Vue',
     route: '/vue'
   },

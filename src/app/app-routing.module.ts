@@ -21,6 +21,15 @@ export const routes: Routes = [
     }
   },
   {
+    matcher: startsWith('users'),
+    loadChildren: async () => await (await import('./components/react-wrapper/react-wrapper.module')).ReactWrapperModule,
+    data: {
+      loadWrapper: async () => (await import('reactRemote/Wrapper')).default,
+      loadComponent: async () => (await import('reactRemote/Users')).default,
+      basename: 'users'
+    }
+  },
+  {
     matcher: startsWith('vue'),
     loadChildren: async () => await (await import('./components/vue-wrapper/vue-wrapper.module')).VueWrapperModule,
     data: {
