@@ -1,10 +1,16 @@
 import {NgModule} from '@angular/core';
+import {async} from '@angular/core/testing';
 import {RouterModule, Routes, UrlMatcher, UrlSegment} from '@angular/router';
 
 export const routes: Routes = [
   {
+    path: '',
+    loadChildren: async () => (await import('./pages/home/home.module')).HomeModule
+
+  },
+  {
     matcher: startsWith('custom2'),
-    loadChildren: async () => await (await import('./components/react-wrapper/react-wrapper.module')).ReactWrapperModule,
+    loadChildren: async () => (await import('./components/react-wrapper/react-wrapper.module')).ReactWrapperModule,
     data: {
       loadWrapper: async () => (await import('reactRemote/Wrapper')).default,
       loadComponent: async () => (await import('reactRemote/Custom2')).default,
@@ -13,7 +19,7 @@ export const routes: Routes = [
   },
   {
     matcher: startsWith('custom'),
-    loadChildren: async () => await (await import('./components/react-wrapper/react-wrapper.module')).ReactWrapperModule,
+    loadChildren: async () => (await import('./components/react-wrapper/react-wrapper.module')).ReactWrapperModule,
     data: {
       loadWrapper: async () => (await import('reactRemote/Wrapper')).default,
       loadComponent: async () => (await import('reactRemote/Custom')).default,
@@ -22,7 +28,7 @@ export const routes: Routes = [
   },
   {
     matcher: startsWith('users'),
-    loadChildren: async () => await (await import('./components/react-wrapper/react-wrapper.module')).ReactWrapperModule,
+    loadChildren: async () => (await import('./components/react-wrapper/react-wrapper.module')).ReactWrapperModule,
     data: {
       loadWrapper: async () => (await import('reactRemote/Wrapper')).default,
       loadComponent: async () => (await import('reactRemote/Users')).default,
@@ -31,7 +37,7 @@ export const routes: Routes = [
   },
   {
     matcher: startsWith('vue'),
-    loadChildren: async () => await (await import('./components/vue-wrapper/vue-wrapper.module')).VueWrapperModule,
+    loadChildren: async () => (await import('./components/vue-wrapper/vue-wrapper.module')).VueWrapperModule,
     data: {
       loadMetadata: async () => await import('vueRemote/Wrapper'),
       component: 'Custom',
@@ -40,7 +46,7 @@ export const routes: Routes = [
   },
   {
     matcher: startsWith('c_vue'),
-    loadChildren: async () => await (await import('./components/vue-wrapper/vue-wrapper.module')).VueWrapperModule,
+    loadChildren: async () => (await import('./components/vue-wrapper/vue-wrapper.module')).VueWrapperModule,
     data: {
       loadMetadata: async () => await import('vueRemote/Wrapper'),
       component: 'Custom2',

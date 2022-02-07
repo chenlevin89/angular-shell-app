@@ -15,7 +15,7 @@ const LAYOUT_SIDEBAR_MENU_ITEMS: SidebarMenuItem[] = [
   {
     icon: 'magic',
     name: 'Home',
-    route: ''
+    route: '/'
   },
   {
     icon: 'magic',
