@@ -1,9 +1,11 @@
-<fusion-layout [configuration]="(layoutConfiguration$.asObservable() | async) || {}"
+<fusion-layout [configuration]="(layoutConfiguration$ | async) || {}"
                (menuSidebarItemClicked)="menuSidebarItemClicked($event)">
   <div class="inner-content-holder">
     <router-outlet></router-outlet>
   </div>
 </fusion-layout>
 
-<!-- <fusion-loader [status]="!!(loading$ | async)">Loading Please Wait...</fusion-loader> -->
-
+<ng-container *ngIf="{loading:!!(loading$ | async)} as data">
+  <fusion-loader [ngClass]="{active:data.loading}"
+                 [status]="data.loading">Loading Please Wait...</fusion-loader>
+</ng-container>

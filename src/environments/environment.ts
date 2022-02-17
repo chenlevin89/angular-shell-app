@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  assetsPath: 'https://fusion.ironsrc.net/assets'
+  assetsPath: 'https://ui-demand.ssacdn.com/demand/icons'
 };
 
 /*

@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
-import {LayoutComponentConfiguration, SidebarMenuItem} from '@ironsource/fusion-ui';
-import {BehaviorSubject} from 'rxjs';
+import {NavigationEnd, NavigationStart, Router} from '@angular/router';
+import {LayoutComponentConfiguration, LayoutHeaderComponentConfiguration, SidebarMenuItem} from '@ironsource/fusion-ui';
+import {BehaviorSubject, debounceTime, delay, filter, fromEvent, map, merge, Observable, pluck, scan, startWith, Subject, tap} from 'rxjs';
 import {routes} from './app-routing.module';
 import {LAYOUT_CONFIGURATION} from './app.config';
+import {PubSubService} from './services/pub-sub.service';
 
 
 @Component({
@@ -15,20 +16,50 @@ export class AppComponent implements OnInit {
 
   static overrideHistoryPushState = false;
 
-  layoutConfiguration$ = new BehaviorSubject<LayoutComponentConfiguration>(LAYOUT_CONFIGURATION);
+  layoutConfiguration$: Observable<LayoutComponentConfiguration>;
+  loading$: Observable<boolean>;
 
-  constructor(private readonly router: Router) {
+  constructor(private readonly router: Router,
+    private readonly pubSubService: PubSubService) {
   }
 
   ngOnInit(): void {
+    this.layoutConfiguration$ = this.getLayoutObservable();
     this.overrideHistoryOnPushMethod();
+    this.setLoading();
   }
-
 
   menuSidebarItemClicked(item: SidebarMenuItem): void {
     this.router.navigate([item.route]);
   }
 
+  private getLayoutObservable(): Observable<LayoutComponentConfiguration> {
+    const layoutEvent$ = fromEvent(document.body, 'header_changed').pipe(pluck('detail'));
+
+    return layoutEvent$.pipe(
+      startWith({}),
+      scan((acc, curr: Partial<LayoutHeaderComponentConfiguration>) => {
+        return {
+          ...acc,
+          headerConfiguration: {
+            ...acc.headerConfiguration,
+            title: curr.title,
+            content: curr.content
+          }
+        };
+      }, {...LAYOUT_CONFIGURATION}),
+    )
+  }
+
+  private setLoading(): void {
+    const pubSubEvents$ = this.pubSubService.register('loading');
+    const globalLoaderEvents$ = fromEvent(document.body, 'set_loader').pipe(pluck('detail'));
+    const routerEvents$ = this.router.events.pipe(
+      filter(e => e instanceof NavigationStart || e instanceof NavigationEnd),
+      map(e => e instanceof NavigationStart)
+    );
+    this.loading$ = merge(routerEvents$, pubSubEvents$, globalLoaderEvents$).pipe(debounceTime(10));
+  }
 
   private overrideHistoryOnPushMethod(): void {
     const original = window.history.pushState;

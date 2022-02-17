@@ -3,9 +3,12 @@
 @import '../node_modules/@ironsource/fusion-ui/style/vars/mixins';
 @import '../node_modules/@ironsource/fusion-ui/style/vars/border';
 @import '../node_modules/@ironsource/fusion-ui/style/fonts';
-@import '../node_modules/@ironsource/fusion-ui/style/fonts_v1';
+// @import '../node_modules/@ironsource/fusion-ui/style/fonts_v1';
 @import '../node_modules/@ironsource/fusion-ui/style/grid';
 
+:root{
+  --layout-sidebar-logo-image:url('assets/icons/logo.svg')
+}
 
 body {
   font: 13px/20px $body;
@@ -14,3 +17,29 @@ body {
   margin: 0;
   padding: 0;
 }
+
+* {
+  box-sizing: border-box;
+}
+
+.truncate {
+  width: 100%;
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden!important;
+  text-overflow: ellipsis;
+}
+
+div.hidden{
+  display: block !important;
+}
+
+ul, ol {
+  padding: 0;
+  margin: 0;
+  li {
+      list-style: none;
+  }
+}
+
+
