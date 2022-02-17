@@ -18,9 +18,9 @@ module.exports = {
       remotes: {
         "reactRemote": "reactRemote@http://localhost:8081/remoteEntry.js",
         "vueRemote": "vueRemote@http://localhost:8082/remoteEntry.js",
-        "adQualityRemote": "adQualityRemote@http://localhost:9000/remoteEntry.js",
-        "analyticsRemote": "analyticsRemote@http://localhost:8080/remoteEntry.js",
-        "demandPlatform":"demandPlatform@https://local.supersonicads.com:4201/remoteEntry.js"
+       // "adQualityRemote": "adQualityRemote@http://localhost:9000/remoteEntry.js",
+        //"analyticsRemote": "analyticsRemote@http://localhost:8080/remoteEntry.js",
+        // "demandPlatform":"demandPlatform@https://local.supersonicads.com:4201/remoteEntry.js"
       },
 
       shared: {

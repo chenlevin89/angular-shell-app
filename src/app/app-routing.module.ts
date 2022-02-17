@@ -1,9 +1,11 @@
+import {loadMicroFrontendModule} from '../utils/mfe-loader';
 import {Injectable, NgModule} from '@angular/core';
-import {ActivatedRouteSnapshot, CanActivate, RouterModule, RouterStateSnapshot, Routes, UrlMatcher, UrlSegment, UrlTree} from '@angular/router';
+import {ActivatedRouteSnapshot, CanActivate, RouterModule, RouterStateSnapshot, Routes, UrlMatcher, UrlSegment, ROUTES} from '@angular/router';
+import {DynamicRouterService} from './services/dynamic-router.service';
 
 // Mock user token do to env requirements
 @Injectable({
-  providedIn:'root'
+  providedIn: 'root'
 })
 class DemandGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
@@ -13,132 +15,70 @@ class DemandGuard implements CanActivate {
 
 }
 
-export const routes: Routes = [
-  {
-    path: '',
-    loadChildren: async () => (await import('./pages/home/home.module')).HomeModule
+function loadDynamicRoutes(dynamicRouterService: DynamicRouterService) {
+  const routes = dynamicRouterService.routes.getValue();
+  return routes.map(curr => {
+    switch (curr.type) {
+      case 'angular': {
+        return parseAngularRoutes(curr);
+      }
+      case 'vue': {
+        return parseVueRoutes(curr);
+      }
+      case 'react': {
+        return parseReactRoutes(curr);
+      }
+      default: {
+        return {}
+      }
+    }
+  });
+}
 
-  },
-  // {
-  //   matcher: startsWith('custom2'),
-  //   loadChildren: async () => (await import('./components/react-wrapper/react-wrapper.module')).ReactWrapperModule,
-  //   data: {
-  //     loadWrapper: async () => (await import('reactRemote/Wrapper')).default,
-  //     loadComponent: async () => (await import('reactRemote/Custom2')).default,
-  //     basename: 'custom2'
-  //   }
-  // },
-  // {
-  //   matcher: startsWith('custom'),
-  //   loadChildren: async () => (await import('./components/react-wrapper/react-wrapper.module')).ReactWrapperModule,
-  //   data: {
-  //     loadWrapper: async () => (await import('reactRemote/Wrapper')).default,
-  //     loadComponent: async () => (await import('reactRemote/Custom')).default,
-  //     basename: 'custom'
-  //   }
-  // },
-  // {
-  //   matcher: startsWith('users'),
-  //   loadChildren: async () => (await import('./components/react-wrapper/react-wrapper.module')).ReactWrapperModule,
-  //   data: {
-  //     loadWrapper: async () => (await import('reactRemote/Wrapper')).default,
-  //     loadComponent: async () => (await import('reactRemote/Users')).default,
-  //     basename: 'users'
-  //   }
-  // },
-  {
-    matcher: startsWith('tb/profile'),
-    loadChildren: async () => (await import('./components/react-wrapper/react-wrapper.module')).ReactWrapperModule,
-    data: {
-      loadWrapper: async () => (await import('adQualityRemote/Wrapper')).default,
-      loadComponent: async () => (await import('adQualityRemote/Profile')).default,
-      basename: '/tb/profile',
-      legacyRouter:true
-    }
-  },
-  {
-    matcher: startsWith('tb/apps'),
-    loadChildren: async () => (await import('./components/react-wrapper/react-wrapper.module')).ReactWrapperModule,
-    data: {
-      loadWrapper: async () => (await import('adQualityRemote/Wrapper')).default,
-      loadComponent: async () => (await import('adQualityRemote/Apps')).default,
-      basename: '/tb/apps',
-      legacyRouter:true
-    }
-  },
-  {
-    matcher: startsWith('tb/team'),
-    loadChildren: async () => (await import('./components/react-wrapper/react-wrapper.module')).ReactWrapperModule,
-    data: {
-      loadWrapper: async () => (await import('adQualityRemote/Wrapper')).default,
-      loadComponent: async () => (await import('adQualityRemote/Team')).default,
-      basename: '/tb/team',
-      legacyRouter:true
-    }
-  },
-  {
-    matcher: startsWith('analytics/overview'),
-    loadChildren: async () => (await import('./components/vue-wrapper/vue-wrapper.module')).VueWrapperModule,
-    data: {
-      loadMetadata: async () => await import('analyticsRemote/Wrapper'),
-      component: 'analyticsOverviewPage',
-      basename: ''
-    }
-  },
-  {
-    matcher: startsWith('analytics/explore'),
-    loadChildren: async () => (await import('./components/vue-wrapper/vue-wrapper.module')).VueWrapperModule,
-    data: {
-      loadMetadata: async () => await import('analyticsRemote/Wrapper'),
-      component: 'analyticsExplorePage',
-      basename: ''
-    }
-  },
-  {
-    matcher: startsWith('analytics/cohorts'),
-    loadChildren: async () => (await import('./components/vue-wrapper/vue-wrapper.module')).VueWrapperModule,
-    data: {
-      loadMetadata: async () => await import('analyticsRemote/Wrapper'),
-      component: 'analyticsCohortsPage',
-      basename: ''
-    }
-  },
-  {
-    path:'demand/overview',
+
+function parseAngularRoutes(config) {
+  return {
+    path: config.path,
     loadChildren: async () => {
-      const moduleGenerationCallback = async () => (await import('demandPlatform/Overview')).OverviewModule;
-      const {WrapperGenerator} = await import('demandPlatform/Wrapper');
-      return WrapperGenerator(moduleGenerationCallback)
-    },
-    canActivate: [DemandGuard]
-  },
-  {
-    path:'demand/management',
-    loadChildren :async () => {
-      const moduleGenerationCallback = async () => (await import('demandPlatform/Management')).ManagementDefaultViewModule;
-      const {WrapperGenerator} = await import('demandPlatform/Wrapper');
+      const moduleGenerationCallback = async () => (await loadMicroFrontendModule({remoteName: config.remoteName, modulePath: config.modulePath}))[config.moduleName];
+      const {[config.wrapperName]: WrapperGenerator} = await loadMicroFrontendModule({remoteName: config.remoteName, modulePath: config.wrapperPath});
       return WrapperGenerator(moduleGenerationCallback)
     },
     canActivate: [DemandGuard]
   }
-  // {
-  //   matcher: startsWith('vue'),
-  //   loadChildren: async () => (await import('./components/vue-wrapper/vue-wrapper.module')).VueWrapperModule,
-  //   data: {
-  //     loadMetadata: async () => await import('vueRemote/Wrapper'),
-  //     component: 'Custom',
-  //     basename: 'vue'
-  //   }
-  // },
-  // {
-  //   matcher: startsWith('c_vue'),
-  //   loadChildren: async () => (await import('./components/vue-wrapper/vue-wrapper.module')).VueWrapperModule,
-  //   data: {
-  //     loadMetadata: async () => await import('vueRemote/Wrapper'),
-  //     component: 'Custom2',
-  //     basename: 'c_vue'
-  //   }
-  // }
+}
+
+function parseVueRoutes(config) {
+  return {
+    matcher: startsWith(config.path),
+    loadChildren: async () => (await import('./components/vue-wrapper/vue-wrapper.module')).VueWrapperModule,
+    data: {
+      loadMetadata: async () => await loadMicroFrontendModule({remoteName: config.remoteName, modulePath: config.wrapperPath}),
+      component: config.componentName,
+      basename: config.basename
+    }
+  }
+}
+
+function parseReactRoutes(config) {
+  return {
+    matcher: startsWith(config.path),
+    loadChildren: async () => (await import('./components/react-wrapper/react-wrapper.module')).ReactWrapperModule,
+    data: {
+      loadWrapper: async () => (await loadMicroFrontendModule({remoteName: config.remoteName, modulePath: config.wrapperPath})).default,
+      loadComponent: async () => (await loadMicroFrontendModule({remoteName: config.remoteName, modulePath: config.componentPath})).default,
+      basename: config.basename,
+      legacyRouter: config.legacyRouter
+    }
+  }
+}
+
+
+export const routes: Routes = [
+  {
+    path: '',
+    loadChildren: async () => (await import('./pages/home/home.module')).HomeModule
+  }
 ];
 
 
@@ -153,7 +93,14 @@ function startsWith(prefix: string): UrlMatcher {
 }
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  imports: [RouterModule.forChild(routes)],
+  providers: [
+    {
+      provide: ROUTES,
+      useFactory: loadDynamicRoutes,
+      deps: [DynamicRouterService],
+      multi: true
+    }
+  ]
 })
 export class AppRoutingModule { }

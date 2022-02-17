@@ -4,6 +4,7 @@ import {LayoutComponentConfiguration, LayoutHeaderComponentConfiguration, Sideba
 import {BehaviorSubject, debounceTime, delay, filter, fromEvent, map, merge, Observable, pluck, scan, startWith, Subject, tap} from 'rxjs';
 import {routes} from './app-routing.module';
 import {LAYOUT_CONFIGURATION} from './app.config';
+import {DynamicRouterService} from './services/dynamic-router.service';
 import {PubSubService} from './services/pub-sub.service';
 
 
@@ -19,11 +20,14 @@ export class AppComponent implements OnInit {
   layoutConfiguration$: Observable<LayoutComponentConfiguration>;
   loading$: Observable<boolean>;
 
-  constructor(private readonly router: Router,
-    private readonly pubSubService: PubSubService) {
+  constructor(
+    private readonly router: Router,
+    private readonly pubSubService: PubSubService,
+    private readonly dynamicRouterService:DynamicRouterService) {
   }
 
   ngOnInit(): void {
+    this.dynamicRouterService.routes.subscribe(console.log) // Todo merge with layout config
     this.layoutConfiguration$ = this.getLayoutObservable();
     this.overrideHistoryOnPushMethod();
     this.setLoading();

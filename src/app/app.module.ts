@@ -6,8 +6,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import {API_OPTIONS_TOKEN, LayoutModule, LoaderModule, StyleVersion, STYLE_VERSION_TOKEN, SvgModule} from '@ironsource/fusion-ui';
 import {environment} from '../environments/environment';
 
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import {DynamicRoutingModule} from './dynamic-routing.module';
 
 @NgModule({
   declarations: [
@@ -15,7 +15,7 @@ import { AppComponent } from './app.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
+    DynamicRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
     LayoutModule,
