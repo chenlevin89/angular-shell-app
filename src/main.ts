@@ -12,17 +12,17 @@ getMfeConfiguration()
 function getMfeConfiguration(): Promise<any[]> {
   const mfeConfigurations = [
     {
-      path: 'https://local.supersonicads.com:4201/remoteEntry.js',
+      path: 'https://local.supersonicads.com/demand/remoteEntry.js',
       remoteName: 'demandPlatform'
     },
-    {
-      path: 'http://localhost:8080/remoteEntry.js',
-      remoteName: 'analyticsRemote'
-    },
-    {
-      path: 'http://localhost:9000/remoteEntry.js',
-      remoteName: 'adQualityRemote'
-    },
+    // {
+    //   path: 'http://localhost:8080/remoteEntry.js',
+    //   remoteName: 'analyticsRemote'
+    // },
+    // {
+    //   path: 'http://localhost:9000/remoteEntry.js',
+    //   remoteName: 'adQualityRemote'
+    // },
   ];
   return new Promise(res => {
     setTimeout(() => {

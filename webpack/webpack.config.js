@@ -2,6 +2,16 @@ const webpack = require("webpack");
 const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
 const dependencies = require("../package.json").dependencies;
 
+const fusionUI = '@ironsource/fusion-ui';
+const fusionUISharedEntities = require(`../node_modules/${fusionUI}/package.json`).sharedEntities;
+
+
+const fusionDeps =  fusionUISharedEntities
+    .reduce((acc, curr) => {
+        acc[`${fusionUI}${curr.slice(1)}`] = {singleton: true, strictVersion: true, requiredVersion: dependencies[fusionUI]};
+        return acc;
+    }, {});
+
 
 module.exports = {
   output: {
@@ -16,11 +26,7 @@ module.exports = {
     new ModuleFederationPlugin({
 
       remotes: {
-        "reactRemote": "reactRemote@http://localhost:8081/remoteEntry.js",
-        "vueRemote": "vueRemote@http://localhost:8082/remoteEntry.js",
-       // "adQualityRemote": "adQualityRemote@http://localhost:9000/remoteEntry.js",
-        //"analyticsRemote": "analyticsRemote@http://localhost:8080/remoteEntry.js",
-        // "demandPlatform":"demandPlatform@https://local.supersonicads.com:4201/remoteEntry.js"
+
       },
 
       shared: {
@@ -29,12 +35,8 @@ module.exports = {
         "@angular/common/http": {singleton: true, strictVersion: true, requiredVersion: dependencies["@angular/common"]},
         "@angular/router": {singleton: true, strictVersion: true, requiredVersion: dependencies["@angular/router"]},
         "@angular/forms": {singleton: true, strictVersion: true, requiredVersion: dependencies["@angular/forms"]},
-        "@ironsource/fusion-ui": {singleton: true, strictVersion: true, requiredVersion: dependencies["@ironsource/fusion-ui"]},
-        "react": {singleton: true, strictVersion: true, requiredVersion: dependencies["react"]},
-        "react-dom": {singleton: true, strictVersion: true, requiredVersion: dependencies["react-dom"]},
-        // "react-router-dom": {singleton: true, strictVersion: true, requiredVersion: dependencies["react-router-dom"]},
-        // "vue": {singleton: true, strictVersion: true, requiredVersion: dependencies["vue"]},
-        // "vue-router": {singleton: true, strictVersion: true, requiredVersion: dependencies["vue-router"]},
+        ...fusionDeps,
+        "@ironsource/fusion-ui/pipes/clone": {singleton: true, strictVersion: true, requiredVersion: dependencies[fusionUI]},
       }
 
     })
@@ -50,18 +52,27 @@ module.exports = {
         context: ['/partners', '/api/rest'],
         target: 'http://localhost:8080',
         changeOrigin: true,
+        headers: {
+          Connection: 'keep-alive',
+        },
       },
       {
         context: ['/api'],
         target: 'http://localhost:9000',
         changeOrigin: true,
+        headers: {
+          Connection: 'keep-alive',
+        },
       },
       {
         context: ['/platformJs'],
-        target: 'https://dev-php-demand3.supersonicads.com',
+        target: 'https://localjs.supersonicads.com',
         changeOrigin: true,
         secure: false,
-        pathRewrite: { '^/platformJs': '/platformjs' }
+        pathRewrite: { '^/platformJs': '' },
+        headers: {
+          Connection: 'keep-alive',
+        },
       }
     ]
   },

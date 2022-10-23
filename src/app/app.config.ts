@@ -1,4 +1,4 @@
-import {SidebarMenuItem, LayoutComponentConfiguration, LayoutHeaderComponentConfiguration} from '@ironsource/fusion-ui';
+import {LayoutComponentConfiguration, LayoutHeaderComponentConfiguration} from '@ironsource/fusion-ui/components/layout/v2';
 
 const LAYOUT_USER = {
   icon: 'user-circle',
@@ -6,12 +6,12 @@ const LAYOUT_USER = {
   email: 'test@irontest.com'
 };
 
-const LAYOUT_HEADER_MENU_ITEMS: SidebarMenuItem[] = [
+const LAYOUT_HEADER_MENU_ITEMS: any[] = [
   {icon: 'magic', name: 'Theme toggle'},
   {icon: 'logout', name: 'Sign out'}
 ];
 
-const LAYOUT_SIDEBAR_MENU_ITEMS: SidebarMenuItem[] = [
+const LAYOUT_SIDEBAR_MENU_ITEMS: any[] = [
   {
     icon: 'spaceship-v2',
     name: 'Demand',
@@ -27,6 +27,10 @@ const LAYOUT_SIDEBAR_MENU_ITEMS: SidebarMenuItem[] = [
       {
         name:'Management',
         route: '/demand/management'
+      },
+      {
+        name:'Generator',
+        route: '/demand/generator'
       }
     ]
   },

@@ -9,7 +9,7 @@ import {DynamicRouterService} from './services/dynamic-router.service';
 })
 class DemandGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    localStorage.setItem('authServiceDB', '{"expiration":"2022-03-16","token":"MDIzZWFlMDg6MTY0NzQ0MjA4MjozN2FhOGEwNDg2MWY2N2EwNDljYzhjZTljYWY5N2ZkYg=="}');
+    localStorage.setItem('authServiceDB', '{"token":"M2Q2ZmE4MjM2ZGZmOjE2NjQyOTg5NTQ6OWY1YzFkZjI4ZGVhNzFkM2NmNDQ3MDZjMzZjNTkyMDQ=","expiration":"2022-09-27"}');
     return true;
   }
 
@@ -39,11 +39,7 @@ function loadDynamicRoutes(dynamicRouterService: DynamicRouterService) {
 function parseAngularRoutes(config) {
   return {
     path: config.path,
-    loadChildren: async () => {
-      const moduleGenerationCallback = async () => (await loadMicroFrontendModule({remoteName: config.remoteName, modulePath: config.modulePath}))[config.moduleName];
-      const {[config.wrapperName]: WrapperGenerator} = await loadMicroFrontendModule({remoteName: config.remoteName, modulePath: config.wrapperPath});
-      return WrapperGenerator(moduleGenerationCallback)
-    },
+    loadChildren: async () => (await loadMicroFrontendModule({remoteName: config.remoteName, modulePath: config.modulePath}))['AppModule'],
     canActivate: [DemandGuard]
   }
 }

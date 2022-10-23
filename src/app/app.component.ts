@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {NavigationEnd, NavigationStart, Router} from '@angular/router';
-import {LayoutComponentConfiguration, LayoutHeaderComponentConfiguration, SidebarMenuItem} from '@ironsource/fusion-ui';
+import {LayoutComponentConfiguration, LayoutHeaderComponentConfiguration} from '@ironsource/fusion-ui/components/layout/v2';
 import {BehaviorSubject, debounceTime, delay, filter, fromEvent, map, merge, Observable, pluck, scan, startWith, Subject, tap} from 'rxjs';
 import {routes} from './app-routing.module';
 import {LAYOUT_CONFIGURATION} from './app.config';
@@ -33,7 +33,7 @@ export class AppComponent implements OnInit {
     this.setLoading();
   }
 
-  menuSidebarItemClicked(item: SidebarMenuItem): void {
+  menuSidebarItemClicked(item:any): void {
     this.router.navigate([item.route]);
   }
 
@@ -51,7 +51,7 @@ export class AppComponent implements OnInit {
             content: curr.content
           }
         };
-      }, {...LAYOUT_CONFIGURATION}),
+      }, {...LAYOUT_CONFIGURATION})
     )
   }
 

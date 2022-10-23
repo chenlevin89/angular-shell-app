@@ -4,25 +4,13 @@ import {BehaviorSubject} from 'rxjs';
 const routes = [
   {
     type: 'angular',
-    path: 'demand/overview',
+    path: 'demand',
     remoteName: 'demandPlatform',
-    modulePath: './Overview',
-    wrapperPath: './Wrapper',
-    moduleName: 'OverviewModule',
-    wrapperName: 'WrapperGenerator'
-  },
-  {
-    type: 'angular',
-    path: 'demand/management',
-    remoteName: 'demandPlatform',
-    modulePath: './Management',
-    wrapperPath: './Wrapper',
-    moduleName: 'ManagementDefaultViewModule',
-    wrapperName: 'WrapperGenerator'
+    modulePath: './AppModule',
   },
   {
     type: 'vue',
-    path: 'analytics/overview',
+    path: 'analytics/overview', // inner path not relevant
     remoteName: 'analyticsRemote',
     wrapperPath: './Wrapper',
     componentName: 'analyticsOverviewPage',

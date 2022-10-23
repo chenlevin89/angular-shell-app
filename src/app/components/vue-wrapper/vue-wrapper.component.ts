@@ -19,7 +19,7 @@ export class VueWrapperComponent implements AfterViewInit, OnInit, OnDestroy {
 
   // Mock user auth do to env requirements
   ngOnInit(): void {
-      localStorage.setItem('authServiceDB', '{"expiration":"2022-03-12","token":"NGQ2MDI2YjlmY2M1OjE2NDcwODAwMzU6Y2JkNzk2NWQ4OWVlMzU3NmE4NzI2ZGEzMDlhZTgzN2I="}')
+      localStorage.setItem('authServiceDB', '{"expiration":"2022-03-31","token":"YTg1OTEzZWFhN2NmOjE2NDg3MjA0NTU6N2E4ZWIyMDRhMjQwM2QyYTRiMjBiYTYyOTllOGFkOTA="}')
   }
 
   ngAfterViewInit(): void {

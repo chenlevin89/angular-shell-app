@@ -1,9 +1,18 @@
-<fusion-layout [configuration]="(layoutConfiguration$ | async) || {}"
-               (menuSidebarItemClicked)="menuSidebarItemClicked($event)">
-  <div class="inner-content-holder">
-    <router-outlet></router-outlet>
-  </div>
-</fusion-layout>
+<ng-container *ngIf="{data:layoutConfiguration$ | async} as config">
+
+  <fusion-layout [userName]="config.data.user.name"
+                 [state]="{
+                  title: $any(config.data?.headerConfiguration.title),
+                  actionComponent: config.data?.headerConfiguration?.content?.component?.type,
+                  actionData: config.data?.headerConfiguration?.content?.component?.data
+                 }"
+                 [menuItems]="$any(config.data.sidebarMenuItems)"
+                 (menuItemClick)="menuSidebarItemClicked($event)">
+    <div class="inner-content-holder">
+      <router-outlet></router-outlet>
+    </div>
+  </fusion-layout>
+</ng-container>
 
 <ng-container *ngIf="{loading:!!(loading$ | async)} as data">
   <fusion-loader [ngClass]="{active:data.loading}"
