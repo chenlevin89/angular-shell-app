@@ -39,8 +39,8 @@ function loadDynamicRoutes(dynamicRouterService: DynamicRouterService) {
 function parseAngularRoutes(config) {
   return {
     path: config.path,
-    loadChildren: async () => (await loadMicroFrontendModule({remoteName: config.remoteName, modulePath: config.modulePath}))['AppModule'],
-    canActivate: [DemandGuard]
+    loadChildren: async () => (await loadMicroFrontendModule({remoteName: config.remoteName, modulePath: config.modulePath}))[config.exportName],
+   // canActivate: [DemandGuard]
   }
 }
 

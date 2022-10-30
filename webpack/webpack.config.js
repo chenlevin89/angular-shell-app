@@ -49,16 +49,8 @@ module.exports = {
     liveReload: true,
     proxy: [
       {
-        context: ['/partners', '/api/rest'],
-        target: 'http://localhost:8080',
-        changeOrigin: true,
-        headers: {
-          Connection: 'keep-alive',
-        },
-      },
-      {
-        context: ['/api'],
-        target: 'http://localhost:9000',
+        context: ['/partners', '/api' , '/api/rest'],
+        target: 'https://dev-php-demand8.supersonicads.com',
         changeOrigin: true,
         headers: {
           Connection: 'keep-alive',
@@ -66,10 +58,10 @@ module.exports = {
       },
       {
         context: ['/platformJs'],
-        target: 'https://localjs.supersonicads.com',
+        target: 'https://dev-php-demand8.supersonicads.com',
         changeOrigin: true,
         secure: false,
-        pathRewrite: { '^/platformJs': '' },
+        pathRewrite: { '^/platformJs': '/platformjs' },
         headers: {
           Connection: 'keep-alive',
         },
